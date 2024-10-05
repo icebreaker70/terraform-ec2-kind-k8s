@@ -16,7 +16,7 @@ ssh -i ~/.ssh/martha.pem ubuntu@$(terraform output -raw ec2_public_ip)
 
 # Kind K8S Cluster 생성 (EC2 접속 후)
 ## kind manifest 복사
-scp -i ~/.ssh/martha.pem kind-svc.yaml ubuntu@$(terraform output -raw ec2_public_ip):~/kind-svc.yaml
+scp -i \~/.ssh/martha.pem kind-svc.yaml ubuntu@$(terraform output -raw ec2_public_ip):\~/kind-svc.yaml<br>
 mv ~ubuntu/kind-svc.yaml .
 
 ## k8s 클러스터 설치
