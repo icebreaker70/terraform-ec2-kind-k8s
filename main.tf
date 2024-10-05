@@ -116,6 +116,10 @@ resource "aws_instance" "k8s_node" {
   security_groups = [aws_security_group.k8s_security_group.id]
   key_name        = "martha" # 이미 생성된 martha.pem을 사용하는 키
 
+  root_block_device { # 코드 추가 ( 현재 기본 값인 8 GiB 로 동작 중 )
+    volume_size = 50
+  }
+
   tags = {
     Name = "MyServer"
   }
