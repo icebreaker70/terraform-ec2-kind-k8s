@@ -1,27 +1,28 @@
 # terraform-ec2-kind-k8s
-Terraform 이용하여 EC2생성 후 Kind로 K8S 구성
+Terraform 이용하여 EC2 생성 후 Kind로 K8S 구성
 
 
 # Terraform 실행 방법 k8S 설치
 ## Terraform 코드 실행
-terraform init && terraform validate
-terraform plan -out tfplan
-terraform apply tfplan
-terraform state list
+terraform init && terraform validate<br>
+terraform plan -out tfplan<br>
+terraform apply tfplan<br>
+terraform state list<br>
 terraform output
 
-## AWS EC2 접속
+
+## Local 환경의 kind manifest를 ec2에 복사
+scp -i \~/.ssh/martha.pem kind-svc.yaml ubuntu@$(terraform output -raw ec2_public_ip):\~/kind-svc.yaml<br>
+
+## AWS EC2 접속 (pem keypair는 본인 것으로 변경 필요)
 ssh -i ~/.ssh/martha.pem ubuntu@$(terraform output -raw ec2_public_ip) 
 
-
-# Kind K8S Cluster 생성 (EC2 접속 후)
-## kind manifest 복사
-scp -i \~/.ssh/martha.pem kind-svc.yaml ubuntu@$(terraform output -raw ec2_public_ip):\~/kind-svc.yaml<br>
+## kind manifest를 ubuntu 계정에서 root 계정으로 이동
 mv ~ubuntu/kind-svc.yaml .
 
-## k8s 클러스터 설치
-kind create cluster --config kind-svc.yaml --name myk8s --image kindest/node:v1.31.0
-docker ps
+## k8s 클러스터 설치 
+kind create cluster --config kind-svc.yaml --name myk8s --image kindest/node:v1.31.0<br>
+docker ps<br>
 kubectl get nodes -o wide
 
 ## 노드에 기본 툴 설치
